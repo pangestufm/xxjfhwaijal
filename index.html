@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cepat Cek Caput (C3)</title>
+    <title>Validator Capaian Output Satker v7 - Premium UI</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
@@ -289,13 +289,13 @@
                     let final_threshold = (L === 0 || S === 0) ? Math.max(base_target, 0.01) : base_target;
 
                     if (T < final_threshold) {
-                        reasons.push(`PCRO s.d (${T.toFixed(2)}%) belum mencapai minimal (${final_threshold.toFixed(2)}%)`);
+                        reasons.push(`PCRO akumulatif (${T.toFixed(2)}%) belum mencapai TARGET (${final_threshold.toFixed(2)}%)`);
                         isError = true;
                     }
 
                     // Logika 3 (RVRO vs Target)
                     if (R === M && T < 100) {
-                        reasons.push(`RVRO s.d bulan ini sudah sama dengan Target. PCRO wajib 100%.`);
+                        reasons.push(`RVRO akumulatif sudah sama dengan Target DIPA. PCRO wajib 100%.`);
                         isError = true;
                         final_threshold = Math.max(final_threshold, 100);
                     }
