@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cepat Cek Caput - V7</title>
+    <title>Cepat Cek Caput (C3) - V10</title>
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
@@ -23,7 +24,7 @@
             --error-text: #dc2626;
             --success-bg: #f0fdf4; 
             --success-text: #16a34a;
-            --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
@@ -41,89 +42,128 @@
             --error-text: #fca5a5;
             --success-bg: #052e16; 
             --success-text: #86efac;
-            --card-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+            --card-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
         }
 
         * { box-sizing: border-box; }
         body { 
             font-family: 'Poppins', sans-serif; 
-            margin: 0; padding: 20px 30px; 
+            margin: 0; padding: 20px; 
             background-color: var(--bg-color); color: var(--text-color);
             transition: var(--transition);
         }
 
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+        .container {
+            max-width: 1450px; margin: auto; padding: 30px;
+            background-color: var(--container-bg); border-radius: 20px; box-shadow: var(--card-shadow);
+        }
+
+        /* --- HEADER & UPLOAD --- */
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; flex-wrap: wrap; gap: 15px; }
         .logo { font-size: 24px; font-weight: 700; color: var(--primary-color); display: flex; align-items: center; gap: 10px; }
         
         .theme-toggle {
             background: var(--container-bg); color: var(--text-color);
             border: 1px solid var(--border-color); padding: 10px 20px;
             border-radius: 50px; cursor: pointer; font-weight: 500; font-family: 'Poppins', sans-serif;
-            box-shadow: var(--card-shadow); transition: var(--transition);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05); transition: var(--transition);
         }
-        .theme-toggle:hover { transform: translateY(-2px); }
-
-        .dashboard-container {
-            background-color: var(--container-bg); padding: 30px; 
-            border-radius: 20px; box-shadow: var(--card-shadow);
-        }
+        .theme-toggle:hover { transform: translateY(-2px); box-shadow: 0 6px 15px rgba(0,0,0,0.1); }
 
         .upload-section {
             display: flex; align-items: center; gap: 20px;
-            padding: 25px; border-radius: 16px; border: 2px dashed var(--border-color);
-            background-color: rgba(0,0,0,0.02); margin-bottom: 30px;
-            transition: var(--transition);
+            padding: 20px; border-radius: 16px; border: 2px dashed var(--border-color);
+            background-color: rgba(0,0,0,0.01); margin-bottom: 30px;
+            transition: var(--transition); flex-wrap: wrap;
         }
-        .upload-section:hover { border-color: var(--primary-color); }
+        .upload-section:hover { 
+            border-color: var(--primary-color); 
+            background-color: rgba(37, 99, 235, 0.02);
+        }
 
-        .file-upload-wrapper { position: relative; overflow: hidden; display: inline-block; }
+        .file-upload-wrapper { flex: 1; min-width: 200px; position: relative; overflow: hidden; display: inline-block; }
         .file-upload-wrapper input[type="file"] { font-size: 100px; position: absolute; left: 0; top: 0; opacity: 0; cursor: pointer; height: 100%; }
         .btn-upload {
+            width: 100%; justify-content: center;
             background-color: var(--container-bg); color: var(--text-color);
             border: 1px solid var(--border-color); padding: 12px 24px;
             border-radius: 8px; font-weight: 500; cursor: pointer;
-            display: flex; align-items: center; gap: 10px; box-shadow: var(--card-shadow);
+            display: flex; align-items: center; gap: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            transition: var(--transition); font-family: inherit;
         }
-        #fileNameDisplay { color: var(--text-muted); font-size: 14px; font-weight: 500;}
+        .btn-upload:hover { box-shadow: 0 6px 12px rgba(0,0,0,0.08); transform: translateY(-1px); }
+        #fileNameDisplay { flex: 1; color: var(--text-muted); font-size: 14px; font-weight: 500; text-align: center;}
 
         .btn-process {
             background-color: var(--primary-color); color: white; border: none; 
             padding: 12px 30px; border-radius: 8px; font-weight: 600; font-family: 'Poppins', sans-serif;
-            cursor: pointer; display: flex; align-items: center; gap: 10px; margin-left: auto;
-            box-shadow: 0 4px 14px 0 rgba(37, 99, 235, 0.39); transition: var(--transition);
+            cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; 
+            box-shadow: 0 4px 14px 0 rgba(37, 99, 235, 0.39); transition: var(--transition); flex-grow: 1;
         }
-        .btn-process:hover { background-color: var(--primary-hover); transform: translateY(-2px); }
+        .btn-process:hover { background-color: var(--primary-hover); transform: translateY(-3px); box-shadow: 0 8px 25px rgba(37, 99, 235, 0.5); }
 
+        /* --- DASHBOARD CARDS --- */
         .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 30px; display: none; }
         .stat-card {
             background: var(--container-bg); padding: 20px; border-radius: 16px;
             border: 1px solid var(--border-color); box-shadow: var(--card-shadow);
             display: flex; align-items: center; gap: 20px; transition: var(--transition);
+            position: relative; overflow: hidden;
         }
-        .stat-card:hover { transform: translateY(-5px); }
-        .stat-icon { width: 60px; height: 60px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; }
+        .stat-card::before {
+            content: ""; position: absolute; left: 0; top: 0; height: 100%; width: 4px;
+            background: var(--primary-color); transform: scaleY(0); transition: var(--transition);
+        }
+        .stat-card:hover::before { transform: scaleY(1); }
+        .stat-card:hover { transform: translateY(-6px); box-shadow: 0 12px 24px rgba(0,0,0,0.1); border-color: transparent; }
+        .stat-icon { width: 60px; height: 60px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; transition: var(--transition); }
+        .stat-card:hover .stat-icon { transform: scale(1.1); }
+        
         .icon-blue { background-color: rgba(37, 99, 235, 0.1); color: var(--primary-color); }
         .icon-green { background-color: rgba(22, 163, 74, 0.1); color: var(--success-text); }
         .icon-red { background-color: rgba(220, 38, 38, 0.1); color: var(--error-text); }
         .stat-details h4 { margin: 0; font-size: 14px; color: var(--text-muted); font-weight: 500; }
         .stat-details h2 { margin: 5px 0 0 0; font-size: 28px; color: var(--text-color); }
 
-        .table-wrapper {
-            border-radius: 16px; border: 1px solid var(--border-color);
-            max-height: 70vh; overflow: auto; position: relative; display: none;
-            box-shadow: var(--card-shadow);
+        /* --- RECAP SECTION (FITUR COPY) --- */
+        #recap-section { margin-bottom: 30px; display: none; }
+        .recap-title-main { font-size: 18px; color: var(--primary-color); margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
+        .recap-card { 
+            background: var(--container-bg); border: 1px solid var(--border-color); 
+            border-radius: 16px; padding: 20px; margin-bottom: 15px; 
+            box-shadow: var(--card-shadow); transition: var(--transition); 
         }
+        .recap-card:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.06); }
+        .recap-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap; gap: 10px; }
+        .recap-title { font-weight: 700; color: var(--text-color); margin: 0; display: flex; align-items: center; gap: 8px;}
+        .btn-copy { 
+            background: #10b981; color: white; border: none; padding: 8px 16px; 
+            border-radius: 8px; cursor: pointer; font-weight: 600; display: flex; 
+            align-items: center; gap: 8px; font-size: 13px; transition: var(--transition); 
+            box-shadow: 0 4px 10px rgba(16,185,129,0.3);
+        }
+        .btn-copy:hover { background: #059669; transform: translateY(-2px); }
+        .recap-text-box { 
+            background: rgba(0,0,0,0.02); padding: 15px; border-radius: 10px; 
+            border: 1px solid var(--border-color); font-family: 'Courier New', Courier, monospace; 
+            font-size: 13px; white-space: pre-wrap; line-height: 1.6; color: var(--text-color); 
+        }
+
+        /* --- TABLE AREA --- */
+        .table-wrapper { border-radius: 16px; border: 1px solid var(--border-color); max-height: 70vh; overflow: auto; position: relative; display: none; box-shadow: var(--card-shadow); }
         table { border-collapse: separate; border-spacing: 0; width: 100%; font-size: 13px; }
         th { 
             background-color: var(--table-header-bg); color: var(--table-header-color); 
             position: sticky; top: 0; z-index: 10; padding: 16px 20px; text-align: left; 
             font-weight: 600; white-space: nowrap; backdrop-filter: blur(10px);
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
         }
-        td { border-bottom: 1px solid var(--border-color); padding: 16px 20px; vertical-align: middle;}
+        td { border-bottom: 1px solid var(--border-color); padding: 16px 20px; vertical-align: middle; transition: all 0.2s ease; }
         tr { transition: var(--transition); background-color: var(--container-bg); }
-        tr:hover { background-color: rgba(0,0,0,0.02); }
+        tr:hover { background-color: var(--bg-color); box-shadow: inset 0 0 15px rgba(0,0,0,0.03); }
+        td:hover { background-color: rgba(37, 99, 235, 0.05); box-shadow: inset 0 0 10px rgba(37, 99, 235, 0.1); }
         
-        .badge { padding: 6px 12px; border-radius: 50px; font-size: 12px; font-weight: 600; display: inline-flex; align-items: center; gap: 5px; }
+        .badge { padding: 6px 12px; border-radius: 50px; font-size: 12px; font-weight: 600; display: inline-flex; align-items: center; gap: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);}
         .badge-success { background-color: var(--success-bg); color: var(--success-text); border: 1px solid rgba(22, 163, 74, 0.2); }
         .badge-error { background-color: var(--error-bg); color: var(--error-text); border: 1px solid rgba(220, 38, 38, 0.2); }
         .reason-text { font-size: 12px; color: var(--text-muted); margin-top: 8px; display: block; line-height: 1.5; }
@@ -131,7 +171,7 @@
         .saran-pill {
             background-color: var(--bg-color); padding: 8px 15px; border-radius: 8px;
             font-size: 16px; font-weight: 700; color: var(--text-color); border: 1px solid var(--border-color);
-            display: inline-block;
+            display: inline-block; box-shadow: 0 2px 6px rgba(0,0,0,0.05);
         }
 
         #loading { display: none; text-align: center; padding: 40px; color: var(--primary-color); }
@@ -141,25 +181,36 @@
         .table-wrapper::-webkit-scrollbar { width: 8px; height: 8px; }
         .table-wrapper::-webkit-scrollbar-track { background: transparent; }
         .table-wrapper::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+
+        /* --- RESPONSIVE / DEVICE COMPATIBILITY --- */
+        @media (max-width: 768px) {
+            body { padding: 10px; }
+            .container { padding: 20px; }
+            .header { flex-direction: column; align-items: flex-start; }
+            .theme-toggle { align-self: flex-start; }
+            .upload-section { flex-direction: column; align-items: stretch; }
+            .summary-grid { grid-template-columns: 1fr; }
+            .stat-card { flex-direction: column; text-align: center; gap: 10px; }
+        }
     </style>
 </head>
 <body>
 
-<div class="header">
-    <div class="logo"><i class="fas fa-rocket"></i>Cepat Cek Caput (C3)</div>
-    <button class="theme-toggle" id="toggleThemeBtn" onclick="toggleTheme()">
-        <i class="fas fa-moon"></i> Dark Mode
-    </button>
-</div>
+<div class="container">
+    <div class="header">
+        <div class="logo"><i class="fas fa-rocket"></i> Cepat Cek Caput - V10 </div>
+        <button class="theme-toggle" id="toggleThemeBtn" onclick="toggleTheme()">
+            <i class="fas fa-moon"></i> Dark Mode
+        </button>
+    </div>
 
-<div class="dashboard-container">
     <div class="upload-section">
         <div class="file-upload-wrapper">
             <button class="btn-upload"><i class="fas fa-paperclip"></i> Pilih File</button>
             <input type="file" id="excelFileInput" accept=".xlsx, .xls, .csv" onchange="updateFileName(this)">
         </div>
         <span id="fileNameDisplay">Belum ada file yang dipilih...</span>
-        <button class="btn-process" onclick="startProcessing()"><i class="fas fa-rocket"></i> Validasi Sekarang</button>
+        <button class="btn-process" onclick="startProcessing()"><i class="fas fa-bolt"></i> Validasi Sekarang</button>
     </div>
 
     <div id="loading">
@@ -191,6 +242,11 @@
         </div>
     </div>
     
+    <div id="recap-section">
+        <h3 class="recap-title-main"><i class="fas fa-comment-dots"></i> Pesan Perbaikan</h3>
+        <div id="recap-list"></div>
+    </div>
+
     <div class="table-wrapper" id="result-container">
         <div id="result"></div>
     </div>
@@ -224,36 +280,35 @@
         }
     }
 
+    function copyToClipboard(elementId) {
+        const text = document.getElementById(elementId).innerText;
+        navigator.clipboard.writeText(text).then(() => {
+            alert('Teks rekapan berhasil disalin!');
+        });
+    }
+
     function startProcessing() {
         const fileInput = document.getElementById('excelFileInput');
         const file = fileInput.files[0];
         
-        if (!file) { 
-            alert('Silakan pilih file Excel/CSV terlebih dahulu!'); 
-            return; 
-        }
+        if (!file) { alert('Silakan pilih file Excel/CSV terlebih dahulu!'); return; }
 
         document.getElementById('summaryGrid').style.display = 'none';
+        document.getElementById('recap-section').style.display = 'none';
         document.getElementById('result-container').style.display = 'none';
         document.getElementById('loading').style.display = 'block';
 
-        setTimeout(() => { processFile(file); }, 500);
-    }
-
-    function processFile(file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            const data = new Uint8Array(e.target.result);
-            const workbook = XLSX.read(data, {type: 'array'});
-            const worksheet = workbook.Sheets[workbook.SheetNames[0]];
-            const rows = XLSX.utils.sheet_to_json(worksheet, {header: 1});
-            renderTable(rows);
-            
-            document.getElementById('loading').style.display = 'none';
-            document.getElementById('summaryGrid').style.display = 'grid';
-            document.getElementById('result-container').style.display = 'block';
-        };
-        reader.readAsArrayBuffer(file);
+        setTimeout(() => { 
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const data = new Uint8Array(e.target.result);
+                const workbook = XLSX.read(data, {type: 'array'});
+                const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+                const rows = XLSX.utils.sheet_to_json(worksheet, {header: 1});
+                renderTable(rows);
+            };
+            reader.readAsArrayBuffer(file);
+        }, 500);
     }
 
     function renderTable(rows) {
@@ -262,17 +317,22 @@
                 <tr>
                     <th>No</th><th>Satuan Kerja</th><th>RO</th>
                     <th>Target</th><th>Belanja (%)</th><th>RVRO</th><th>TPCRO (%)</th><th>PCRO (%)</th>
-                    <th>Status Validasi</th><th style="text-align:center;">Saran Isian PCRO</th>
+                    <th>Status Validasi</th><th style="text-align:center;">Saran Isian Q</th>
                 </tr>
             </thead>
             <tbody>`;
 
-        let errors = 0; let valids = 0;
+        let errors = 0; let valids = 0; let total = 0;
+        let satkerErrors = {};
 
         rows.forEach((row) => {
             if (row && row.length > 19) {
                 let no = parseInt(row[0]);
                 if (!isNaN(no) && no > 0) {
+                    let kodeSatker = row[1] ? row[1].toString() : "-";
+                    let namaSatker = row[2] || "-";
+                    let kro_ro = row[7] || "-";
+
                     let L = parseFloat((parseFloat(row[11]) || 0).toFixed(2));
                     let M = parseFloat(row[12]) || 0;
                     let Q = parseFloat((parseFloat(row[16]) || 0).toFixed(2));
@@ -282,54 +342,54 @@
 
                     let reasons = []; let isError = false;
 
-                    // Logika 1, 2, & 4 gabungan
                     let base_target = Math.max(L, S);
-                    
-                    // MINIMAL PCRO DIUBAH JADI 0.01
+                    // Logika 0.01%
                     let final_threshold = (L === 0 || S === 0) ? Math.max(base_target, 0.01) : base_target;
 
                     if (T < final_threshold) {
-                        reasons.push(`PCRO akumulatif (${T.toFixed(2)}%) belum mencapai TARGET (${final_threshold.toFixed(2)}%)`);
+                        reasons.push(`PCRO s.d (${T.toFixed(2)}%) belum mencapai minimal (${final_threshold.toFixed(2)}%)`);
                         isError = true;
                     }
 
-                    // Logika 3 (RVRO vs Target)
                     if (R === M && T < 100) {
-                        reasons.push(`RVRO akumulatif sudah sama dengan Target DIPA. PCRO wajib 100%.`);
+                        reasons.push(`RVRO s.d bulan ini sudah sama dengan Target. PCRO wajib 100%.`);
                         isError = true;
                         final_threshold = Math.max(final_threshold, 100);
                     }
 
-                    let saran = `<span style="color: var(--text-muted)">-</span>`;
+                    let saranVal = isError ? Math.max(final_threshold - (T - Q), 0).toFixed(2) : "-";
+                    let saranHtml = `<span style="color: var(--text-muted)">-</span>`;
                     let statusHTML = "";
 
                     if (isError) {
-                        let x = T - Q; 
-                        let q_seharusnya = Math.max(final_threshold - x, 0); 
-                        saran = `<div class="saran-pill">${q_seharusnya.toFixed(2)}%</div>`;
-                        
+                        saranHtml = `<div class="saran-pill">${saranVal}%</div>`;
                         statusHTML = `<div class="badge badge-error"><i class="fas fa-times-circle"></i> Perbaikan</div>
                                       <span class="reason-text">${reasons.join('<br>• ')}</span>`;
                         errors++;
+                        
+                        // Simpan error ke array Satker untuk fitur Rekap
+                        if (!satkerErrors[kodeSatker]) satkerErrors[kodeSatker] = { name: namaSatker, list: [] };
+                        satkerErrors[kodeSatker].list.push({ ro: kro_ro, saran: saranVal });
                     } else {
                         statusHTML = `<div class="badge badge-success"><i class="fas fa-check-circle"></i> Valid</div>`;
                         valids++;
                     }
+                    total++;
 
                     tableHTML += `<tr style="${isError ? 'background-color: var(--error-bg);' : ''}">
                         <td><b>${no}</b></td>
                         <td style="min-width:220px; line-height:1.4;">
-                            <span style="font-size:11px; color:var(--text-muted);">${row[1]}</span><br>
-                            <b>${row[2]}</b>
+                            <span style="font-size:11px; color:var(--text-muted);">${kodeSatker}</span><br>
+                            <b>${namaSatker}</b>
                         </td>
-                        <td style="font-weight:600; color:var(--primary-color)">${row[7]}</td>
+                        <td style="font-weight:600; color:var(--primary-color)">${kro_ro}</td>
                         <td>${M}</td>
                         <td>${L.toFixed(2)}%</td>
                         <td>${R}</td>
                         <td>${S.toFixed(2)}%</td>
                         <td><b>${T.toFixed(2)}%</b></td>
                         <td style="min-width:260px">${statusHTML}</td>
-                        <td style="text-align:center">${saran}</td>
+                        <td style="text-align:center">${saranHtml}</td>
                     </tr>`;
                 }
             }
@@ -337,10 +397,40 @@
 
         tableHTML += `</tbody></table>`;
         
-        document.getElementById('countTotal').innerText = valids + errors;
+        // Membangun UI Rekap Teks
+        const recapList = document.getElementById('recap-list');
+        recapList.innerHTML = "";
+        const kodeSatkers = Object.keys(satkerErrors);
+
+        if (kodeSatkers.length > 0) {
+            document.getElementById('recap-section').style.display = 'block';
+            kodeSatkers.forEach((kode, index) => {
+                const data = satkerErrors[kode];
+                const textId = `recap-text-${index}`;
+                
+                let messageRows = data.list.map((item, idx) => `${idx + 1}. ${item.ro}, isi rekomendasi sesuai Aplikasi yaitu ${item.saran}%`).join('\n');
+                
+                let fullMessage = `Yth. Bapak/Ibu Satuan Kerja ${kode} (${data.name}), berikut kami sampaikan RO yang masih perlu diperbaiki:\n\n${messageRows}\n\ndemikian disampaikan, jika terdapat kendala dalam pengisian, silahkan menghubungi CSO KPPN melalui kanal yang tersedia, terima kasih`;
+
+                recapList.innerHTML += `
+                    <div class="recap-card">
+                        <div class="recap-header">
+                            <p class="recap-title"><i class="fas fa-building"></i> Satker ${kode}</p>
+                            <button class="btn-copy" onclick="copyToClipboard('${textId}')"><i class="fas fa-copy"></i> Salin Pesan</button>
+                        </div>
+                        <div class="recap-text-box" id="${textId}">${fullMessage}</div>
+                    </div>
+                `;
+            });
+        }
+        
+        document.getElementById('countTotal').innerText = total;
         document.getElementById('countValid').innerText = valids;
         document.getElementById('countError').innerText = errors;
         
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('summaryGrid').style.display = 'grid';
+        document.getElementById('result-container').style.display = 'block';
         document.getElementById('result').innerHTML = tableHTML;
     }
 </script>
