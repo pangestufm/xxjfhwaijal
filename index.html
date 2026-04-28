@@ -420,7 +420,7 @@
                 // Format Pesan diubah, Pagu dimasukkan
                 let messageRows = data.list.map((item, idx) => `${idx + 1}. ${item.ro} (Pagu: ${item.pagu}), isi PCRO Bulan ini: ${item.saran}%`).join('\n');
                 
-                let fullMessage = `Yth. Bapak/Ibu Satuan Kerja ${kode} (${data.name}), berikut kami sampaikan RO yang masih perlu diperbaiki:\n\n${messageRows}\n\nDemikian disampaikan, jika terdapat kendala dalam pengisian silahkan menghubungi PTPN KPPN melalui kanal yang tersedia.\n\nTerima kasih`;
+                let fullMessage = `Yth. Bapak/Ibu Satuan Kerja ${kode} (${data.name}), berikut kami sampaikan RO yang masih perlu diperbaiki:\n\n${messageRows}\n\nDemikian disampaikan, jika terdapat kendala dalam pengisian silahkan menghubungi CSO KPPN melalui kanal yang tersedia.\n\nTerima kasih`;
 
                 recapList.innerHTML += `
                     <div class="recap-card">
