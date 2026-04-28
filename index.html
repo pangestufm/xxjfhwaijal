@@ -191,6 +191,17 @@
             .summary-grid { grid-template-columns: 1fr; }
             .stat-card { flex-direction: column; text-align: center; gap: 10px; }
         }
+        /* --- FOOTER STYLE --- */
+        .footer-text {
+        text-align: center;
+        margin-top: 40px;
+        padding-top: 20px;
+        border-top: 1px solid var(--border-color);
+        color: var(--text-muted);
+        font-size: 14px;
+        font-weight: 500;
+        letter-spacing: 0.5px;
+}
     </style>
 </head>
 <body>
@@ -249,6 +260,9 @@
     <div class="table-wrapper" id="result-container">
         <div id="result"></div>
     </div>
+    <footer class="footer-text">
+        Powered by <span style="color: var(--primary-color); font-weight: 700;">KPPN Sintang</span>
+    </footer>
 </div>
 
 <script>
@@ -355,7 +369,7 @@
                     let final_threshold = (L === 0 || S === 0) ? Math.max(base_target, 0.01) : base_target;
 
                     if (T < final_threshold) {
-                        reasons.push(`PCRO bulan ini (${T.toFixed(2)}%) belum mencapai target (${final_threshold.toFixed(2)}%)`);
+                        reasons.push(`PCRO bulan ini (${T.toFixed(2)}%) belum mencapai Target (${final_threshold.toFixed(2)}%)`);
                         isError = true;
                     }
 
@@ -420,7 +434,7 @@
                 // Format Pesan diubah, Pagu dimasukkan
                 let messageRows = data.list.map((item, idx) => `${idx + 1}. ${item.ro} (Pagu: ${item.pagu}), isi PCRO Bulan ini: ${item.saran}%`).join('\n');
                 
-                let fullMessage = `Yth. Bapak/Ibu Satuan Kerja ${kode} (${data.name}), berikut kami sampaikan RO yang masih perlu diperbaiki:\n\n${messageRows}\n\nDemikian disampaikan, jika terdapat kendala dalam pengisian silahkan menghubungi CSO KPPN melalui kanal yang tersedia.\n\nTerima kasih`;
+                let fullMessage = `Yth. Bapak/Ibu Satuan Kerja ${kode} (${data.name}), berikut kami sampaikan RO yang masih perlu diperbaiki:\n\n${messageRows}\n\ndemikian disampaikan, jika terdapat kendala dalam pengisian silahkan menghubungi CSO KPPN melalui kanal yang tersedia.\n\nTerima kasih`;
 
                 recapList.innerHTML += `
                     <div class="recap-card">
