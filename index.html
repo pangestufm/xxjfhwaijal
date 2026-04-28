@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cepat Cek Caput (C3) - V10</title>
+    <title>Cepat Cek Caput (C3) - V10   </title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -125,7 +125,7 @@
         .stat-details h4 { margin: 0; font-size: 14px; color: var(--text-muted); font-weight: 500; }
         .stat-details h2 { margin: 5px 0 0 0; font-size: 28px; color: var(--text-color); }
 
-        /* --- RECAP SECTION (FITUR COPY) --- */
+        /* --- RECAP SECTION --- */
         #recap-section { margin-bottom: 30px; display: none; }
         .recap-title-main { font-size: 18px; color: var(--primary-color); margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
         .recap-card { 
@@ -171,7 +171,7 @@
         .saran-pill {
             background-color: var(--bg-color); padding: 8px 15px; border-radius: 8px;
             font-size: 16px; font-weight: 700; color: var(--text-color); border: 1px solid var(--border-color);
-            display: inline-block; box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+            display: inline-block; box-shadow: 0 2px 6px rgba(0,0,0,0.05); white-space: nowrap;
         }
 
         #loading { display: none; text-align: center; padding: 40px; color: var(--primary-color); }
@@ -182,7 +182,6 @@
         .table-wrapper::-webkit-scrollbar-track { background: transparent; }
         .table-wrapper::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
 
-        /* --- RESPONSIVE / DEVICE COMPATIBILITY --- */
         @media (max-width: 768px) {
             body { padding: 10px; }
             .container { padding: 20px; }
@@ -198,7 +197,7 @@
 
 <div class="container">
     <div class="header">
-        <div class="logo"><i class="fas fa-rocket"></i> Cepat Cek Caput - V10 </div>
+        <div class="logo"><i class="fas fa-rocket"></i> Cepat Cek Caput (C3)</div>
         <button class="theme-toggle" id="toggleThemeBtn" onclick="toggleTheme()">
             <i class="fas fa-moon"></i> Dark Mode
         </button>
@@ -210,7 +209,7 @@
             <input type="file" id="excelFileInput" accept=".xlsx, .xls, .csv" onchange="updateFileName(this)">
         </div>
         <span id="fileNameDisplay">Belum ada file yang dipilih...</span>
-        <button class="btn-process" onclick="startProcessing()"><i class="fas fa-check-double"></i> Validasi Sekarang</button>
+        <button class="btn-process" onclick="startProcessing()"><i class="fas fa-magnifying-glass"></i> Validasi Sekarang</button>
     </div>
 
     <div id="loading">
@@ -243,7 +242,7 @@
     </div>
     
     <div id="recap-section">
-        <h3 class="recap-title-main"><i class="fas fa-comment-dots"></i> Pesan Perbaikan</h3>
+        <h3 class="recap-title-main"><i class="fas fa-comment-dots"></i>Summary</h3>
         <div id="recap-list"></div>
     </div>
 
@@ -311,13 +310,18 @@
         }, 500);
     }
 
+    // Fungsi Format Rupiah
+    function formatRupiah(angka) {
+        return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka);
+    }
+
     function renderTable(rows) {
         let tableHTML = `<table>
             <thead>
                 <tr>
-                    <th>No</th><th>Satuan Kerja</th><th>RO</th>
+                    <th>No</th><th>Satuan Kerja</th><th>RO</th><th>Pagu</th>
                     <th>Target</th><th>Belanja (%)</th><th>RVRO</th><th>TPCRO (%)</th><th>PCRO (%)</th>
-                    <th>Status Validasi</th><th style="text-align:center;">Saran Isian Q</th>
+                    <th>Status Validasi</th><th style="text-align:center;">Rekomendasi</th>
                 </tr>
             </thead>
             <tbody>`;
@@ -332,6 +336,10 @@
                     let kodeSatker = row[1] ? row[1].toString() : "-";
                     let namaSatker = row[2] || "-";
                     let kro_ro = row[7] || "-";
+                    
+                    // Ambil Pagu dari Kolom J (Index 9)
+                    let paguAsli = parseFloat(row[9]) || 0;
+                    let paguFormatted = formatRupiah(paguAsli);
 
                     let L = parseFloat((parseFloat(row[11]) || 0).toFixed(2));
                     let M = parseFloat(row[12]) || 0;
@@ -367,9 +375,9 @@
                                       <span class="reason-text">${reasons.join('<br>• ')}</span>`;
                         errors++;
                         
-                        // Simpan error ke array Satker untuk fitur Rekap
+                        // Simpan error ke array Satker, DITAMBAHKAN PAGU
                         if (!satkerErrors[kodeSatker]) satkerErrors[kodeSatker] = { name: namaSatker, list: [] };
-                        satkerErrors[kodeSatker].list.push({ ro: kro_ro, saran: saranVal });
+                        satkerErrors[kodeSatker].list.push({ ro: kro_ro, pagu: paguFormatted, saran: saranVal });
                     } else {
                         statusHTML = `<div class="badge badge-success"><i class="fas fa-check-circle"></i> Valid</div>`;
                         valids++;
@@ -383,6 +391,7 @@
                             <b>${namaSatker}</b>
                         </td>
                         <td style="font-weight:600; color:var(--primary-color)">${kro_ro}</td>
+                        <td style="font-size: 13px; font-family: monospace; white-space: nowrap;">${paguFormatted}</td>
                         <td>${M}</td>
                         <td>${L.toFixed(2)}%</td>
                         <td>${R}</td>
@@ -397,7 +406,7 @@
 
         tableHTML += `</tbody></table>`;
         
-        // Membangun UI Rekap Teks
+        // Membangun UI Rekap Teks DENGAN INFO PAGU
         const recapList = document.getElementById('recap-list');
         recapList.innerHTML = "";
         const kodeSatkers = Object.keys(satkerErrors);
@@ -408,9 +417,10 @@
                 const data = satkerErrors[kode];
                 const textId = `recap-text-${index}`;
                 
-                let messageRows = data.list.map((item, idx) => `${idx + 1}. ${item.ro}, isi rekomendasi sesuai Aplikasi yaitu ${item.saran}%`).join('\n');
+                // Format Pesan diubah, Pagu dimasukkan
+                let messageRows = data.list.map((item, idx) => `${idx + 1}. ${item.ro} (Pagu: ${item.pagu}), isi PCRO Bulan ini: ${item.saran}%`).join('\n');
                 
-                let fullMessage = `Yth. Bapak/Ibu Satuan Kerja ${kode} (${data.name}), berikut kami sampaikan RO yang masih perlu diperbaiki:\n\n${messageRows}\n\nDemikian disampaikan, jika terdapat kendala dalam pengisian silahkan menghubungi CSO KPPN melalui kanal yang tersedia.\n\nTerima kasih.`;
+                let fullMessage = `Yth. Bapak/Ibu Satuan Kerja ${kode} (${data.name}), berikut kami sampaikan RO yang masih perlu diperbaiki:\n\n${messageRows}\n\ndemikian disampaikan, jika terdapat kendala dalam pengisian silahkan menghubungi PTPN KPPN Sintang melalui grup Help Desk/Japri.\n\nTerima kasih`;
 
                 recapList.innerHTML += `
                     <div class="recap-card">
